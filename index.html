@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Адреса Тирасполя</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+
+  <!-- Стили -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="dark">
+
+  <!-- ===================== ШАПКА ====================== -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">Адреса <span class="city-pill">Тирасполь</span></div>
+    </div>
+
+    <div class="topbar-center">
+      <input type="text" id="search" class="search-top" placeholder="Поиск дома...">
+    </div>
+
+    <button id="theme-toggle" class="theme-btn">
+      <span id="theme-icon">🌙</span>
+    </button>
+  </header>
+
+
+  <!-- ===================== ЛЕЙАУТ ====================== -->
+  <div class="layout">
+
+    <!-- ---------- Сайдбар (десктоп) ----------- -->
+    <aside id="sidebar" class="sidebar">
+
+      <div class="sidebar-section">
+        <label class="street-label" for="street-select">Улица:</label>
+        <select id="street-select" class="street-select"></select>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="controls-row">
+          <span class="chip">Всего: <span id="count-all">0</span></span>
+          <span class="chip">Показано: <span id="count-visible">0</span></span>
+          <button id="reset-btn" type="button">⟳ Сброс</button>
+        </div>
+      </div>
+
+      <!-- Список домов -->
+      <ul id="address-list"></ul>
+
+      <!-- Инфо о доме -->
+      <section id="house-info" class="house-info">
+        <div class="house-info-title">Информация о доме</div>
+        <div class="house-info-body" id="house-info-body">
+          <p class="muted">Выберите дом в списке или на карте.</p>
+        </div>
+      </section>
+    </aside>
+
+    <!-- ---------- Карта ----------- -->
+    <div id="map"></div>
+
+  </div> <!-- ← ОБЯЗАТЕЛЬНОЕ закрытие layout -->
+
+
+  <!-- ===================== МОБИЛЬНЫЙ НИЖНИЙ БАР ====================== -->
+  <nav class="mobile-bar">
+    <button id="mb-streets">
+      <span>📍</span>
+      <b>Улицы</b>
+    </button>
+
+    <button id="mb-search">
+      <span>🔍</span>
+      <b>Поиск</b>
+    </button>
+
+    <button id="mb-info">
+      <span>🏠</span>
+      <b>Дом</b>
+    </button>
+
+    <button id="mb-theme">
+      <span>🌓</span>
+      <b>Тема</b>
+    </button>
+  </nav>
+
+
+  <!-- ===================== ПАНЕЛЬ: УЛИЦЫ ====================== -->
+  <div id="panel-streets" class="mobile-panel">
+    <div class="panel-header">
+      <button class="panel-back">←</button>
+      <span>Улицы</span>
+    </div>
+    <div class="panel-content" id="mobile-street-list"></div>
+  </div>
+
+
+  <!-- ===================== ПАНЕЛЬ: ПОИСК ====================== -->
+  <div id="panel-search" class="mobile-panel">
+    <div class="panel-header">
+      <button class="panel-back">←</button>
+      <span>Поиск</span>
+    </div>
+
+    <input
+      type="text"
+      id="mobile-search-input"
+      class="panel-input"
+      placeholder="Введите адрес..."
+    >
+
+    <div class="panel-content" id="mobile-search-results"></div>
+  </div>
+
+
+  <!-- ===================== ПАНЕЛЬ: ИНФО О ДОМЕ ====================== -->
+  <div id="panel-info" class="mobile-panel">
+
+    <div class="panel-header">
+      <button class="panel-back">←</button>
+      <span>Информация о доме</span>
+    </div>
+
+    <div class="panel-content">
+
+      <!-- Кнопка добавления фото -->
+      <button id="upload-photo-btn" class="info-add-photo-btn">
+        Добавить фото
+      </button>
+
+      <!-- Галерея -->
+      <div id="house-photos" class="house-photos"></div>
+
+      <!-- Информация о доме -->
+      <div id="mobile-house-info">
+        <p class="muted">Дом не выбран.</p>
+      </div>
+
+    </div>
+
+  </div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/buildings.js"></script>
+<script src="js/map.js"></script>
+
+<!-- Cloudinary должен быть ВЫШЕ ui.js -->
+<script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
+
+<script src="js/ui.js"></script>
+
+
+</body>
+</html>

@@ -1,0 +1,527 @@
+/***********************************************
+ * ------------- ТЕМА / ПЕРЕМЕННЫЕ ------------
+ ***********************************************/
+:root {
+  --bg: #f3f4f6;
+  --sidebar-bg: #ffffff;
+  --text: #111827;
+  --border: #e5e7eb;
+  --accent: #6366f1;
+  --accent-soft: #e0e7ff;
+  --item-bg: #f9fafb;
+  --item-hover: #e5edff;
+
+  --grad-main: radial-gradient(circle at top left, #6366f1, #4f46e5, #312e81);
+}
+
+body.dark {
+  --bg: #020617;
+  --sidebar-bg: #020617;
+  --text: #e5e7eb;
+  --border: #1f2937;
+  --accent: #818cf8;
+  --accent-soft: #1d2446;
+  --item-bg: #020617;
+  --item-hover: #111827;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
+}
+
+.muted {
+  opacity: 0.7;
+  font-size: 13px;
+}
+
+/***********************************************
+ * ------------------ ШАПКА --------------------
+ ***********************************************/
+.topbar {
+  height: 56px;
+  background: var(--sidebar-bg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  position: relative;
+  z-index: 10;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.city-pill {
+  background: var(--accent-soft);
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.topbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.search-top {
+  width: 60%;
+  max-width: 420px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--item-bg);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.theme-btn {
+  font-size: 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+
+/* кнопка фото */
+.info-add-photo-btn {
+  margin: 12px 18px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.house-photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 18px;
+}
+
+.house-photos img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+
+/***********************************************
+ * --------------- ДЕСКТОП ЛЕЙАУТ -------------
+ ***********************************************/
+.layout {
+  display: flex;
+  height: calc(100vh - 56px);
+}
+
+/* Sidebar (desktop) */
+.sidebar {
+  width: 320px;
+  background: var(--sidebar-bg);
+  box-shadow: 2px 0 16px rgba(0,0,0,0.18);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  z-index: 5;
+}
+
+.sidebar-section {
+  margin-bottom: 10px;
+}
+
+.street-label {
+  font-size: 12px;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.street-select {
+  width: 100%;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--item-bg);
+  color: var(--text);
+  font-size: 13px;
+  outline: none;
+}
+
+/* Controls row */
+.controls-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.chip {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+#reset-btn {
+  flex-shrink: 0;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: 0.2s;
+}
+
+#reset-btn:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* Список адресов */
+#address-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+#address-list li {
+  padding: 10px 10px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.16s;
+  border: 1px solid var(--border);
+  background: var(--item-bg);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.addr-main {
+  font-weight: 600;
+}
+
+.addr-sub {
+  font-size: 11px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+#address-list li:hover {
+  background: var(--item-hover);
+  transform: translateX(2px);
+  border-color: var(--accent);
+}
+
+#address-list li.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+/* Информация о доме (десктоп) */
+.house-info {
+  margin-top: 10px;
+  padding: 10px 10px 12px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--item-bg);
+}
+
+.house-info-title {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+  margin-bottom: 6px;
+}
+
+.house-info-body p {
+  margin: 4px 0;
+  font-size: 13px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.info-label {
+  opacity: 0.7;
+}
+
+.info-value {
+  text-align: right;
+}
+
+/* Карта */
+#map {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+}
+
+/***********************************************
+ * --------- Маркер и подсветка дома ----------
+ ***********************************************/
+.leaflet-div-icon {
+  background: transparent;
+  border: none;
+}
+
+.marker-bounce {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f97316;
+  box-shadow: 0 0 0 6px rgba(249,115,22,0.4);
+  position: relative;
+  transform-origin: center bottom;
+  animation: markerPop 0.45s ease-out;
+}
+
+.marker-bounce::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes markerPop {
+  0%   { transform: translateY(12px) scale(0.7); opacity: 0; }
+  60%  { transform: translateY(-4px) scale(1.15); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+/* Пульсирующий контур здания */
+.building-highlight {
+  stroke: #f97316 !important;
+  stroke-width: 2 !important;
+  fill: rgba(249, 115, 22, 0.38) !important;
+  animation: buildingPulse 1.4s ease-in-out infinite;
+}
+
+@keyframes buildingPulse {
+  0%   { stroke-width: 2;   fill-opacity: 0.38; }
+  50%  { stroke-width: 5;   fill-opacity: 0.8; }
+  100% { stroke-width: 2;   fill-opacity: 0.38; }
+}
+
+/***********************************************
+ * ---------------- МОБИЛЬНЫЙ -----------------
+ ***********************************************/
+@media (max-width: 768px) {
+
+  .topbar-center {
+    display: none; /* прячем верхний поиск */
+  }
+
+  .layout {
+    display: block;
+    height: auto;
+  }
+
+  /* Сайдбар на мобилке не показываем */
+  .sidebar {
+    display: none;
+  }
+
+  /* Карта занимает почти весь экран (минус шапка и нижняя панель) */
+  #map {
+    height: calc(100vh - 56px - 70px);
+    width: 100%;
+  }
+
+  /* НИЖНИЙ БАР (как в приложении) */
+  .mobile-bar {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+
+    height: 60px;
+    background: var(--grad-main);
+    border-radius: 999px;
+    padding: 0 20px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    z-index: 30;
+  }
+
+  .mobile-bar button {
+    background: none;
+    border: none;
+    color: #e5e7eb;
+    font-size: 11px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  .mobile-bar button span {
+    font-size: 22px;
+    margin-bottom: 2px;
+  }
+
+  .mobile-bar button.active span {
+    transform: translateY(-2px);
+  }
+
+  /* ПОЛНОЭКРАННЫЕ ПАНЕЛИ */
+  .mobile-panel {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 100%;
+    bottom: 0;
+
+    background: var(--grad-main);
+    color: #e5e7eb;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    box-shadow: 0 -18px 50px rgba(0,0,0,0.75);
+
+    transition: top 0.35s ease;
+    z-index: 40;
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-panel.open {
+    top: 0;
+    z-index: 9999;
+  }
+
+  .panel-header {
+    height: 64px;
+    padding: 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(148,163,184,0.3);
+    font-size: 18px;
+  }
+
+  .panel-back {
+    background: rgba(15,23,42,0.4);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #e5e7eb;
+    width: 34px;
+    height: 34px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .panel-input {
+    margin: 14px 18px 8px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: none;
+    font-size: 15px;
+    width: calc(100% - 36px);
+    background: rgba(15,23,42,0.6);
+    color: #e5e7eb;
+  }
+
+  .panel-input::placeholder {
+    color: rgba(148,163,184,0.9);
+  }
+
+  .panel-content {
+    padding: 12px 16px 16px;
+    overflow-y: auto;
+    flex: 1;
+    z-index: 10;
+  }
+
+  /* Элементы в панелях (улицы / результаты поиска) */
+  #mobile-street-list div,
+  #mobile-search-results div {
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    border-radius: 18px;
+    border: 1px solid rgba(148,163,184,0.6);
+    background: rgba(15,23,42,0.55);
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  #mobile-street-list div:hover,
+  #mobile-search-results div:hover {
+    transform: translateX(4px);
+    background: rgba(15,23,42,0.85);
+  }
+
+  /* Информация о доме (мобилка) */
+  #mobile-house-info .info-row {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+}
+
+/* На десктопе mobile-элементы не нужны */
+@media (min-width: 769px) {
+  .mobile-bar,
+  .mobile-panel {
+    display: none;
+  }
+}
