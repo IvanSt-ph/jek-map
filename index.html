@@ -64,7 +64,7 @@
     <!-- ---------- Карта ----------- -->
     <div id="map"></div>
 
-  </div> <!-- ← ОБЯЗАТЕЛЬНОЕ закрытие layout -->
+  </div> <!-- layout -->
 
 
   <!-- ===================== МОБИЛЬНЫЙ НИЖНИЙ БАР ====================== -->
@@ -146,17 +146,18 @@
 
   </div>
 
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- ===================== СКРИПТЫ ====================== -->
 
-<script src="js/data.js"></script>
-<script src="js/buildings.js"></script>
-<script src="js/map.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<!-- Cloudinary должен быть ВЫШЕ ui.js -->
-<script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/buildings.js"></script>
+  <script src="js/map.js"></script>
 
-<script src="js/ui.js"></script>
+  <!-- Cloudinary Upload Widget (важно: до ui.js) -->
+  <script src="https://upload-widget.cloudinary.com/latest/global/all.js"></script>
 
+  <script src="js/ui.js"></script>
 
 </body>
 </html>
