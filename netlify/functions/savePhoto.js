@@ -1,73 +1,126 @@
 // netlify/functions/savePhoto.js
 
-const REPO = "IvanSt-ph/jek-map";
-const FILE_PATH = "photos.json";
+const REPO = "IvanSt-ph/jek-map";   // твой репозиторий
+const FILE_PATH = "photos.json";    // файл с привязкой дом → список URL
 
 exports.handler = async (event) => {
   try {
+    // Разрешаем только POST
     if (event.httpMethod !== "POST") {
-      return { statusCode: 405, body: "Method Not Allowed" };
+      return {
+        statusCode: 405,
+        body: "Method Not Allowed"
+      };
     }
 
     const token = process.env.GITHUB_TOKEN;
     if (!token) {
-      return { statusCode: 500, body: "Missing GITHUB_TOKEN env var" };
+      return {
+        statusCode: 500,
+        body: "Missing GITHUB_TOKEN env var"
+      };
     }
 
-    const body = JSON.parse(event.body || "{}");
-    const { houseId, url } = body;
+    // Читаем тело запроса
+    let payload;
+    try {
+      payload = JSON.parse(event.body || "{}");
+    } catch (e) {
+      return {
+        statusCode: 400,
+        body: "Invalid JSON body"
+      };
+    }
+
+    const { houseId, url } = payload;
 
     if (!houseId || !url) {
-      return { statusCode: 400, body: "houseId and url are required" };
+      return {
+        statusCode: 400,
+        body: "houseId and url are required"
+      };
     }
 
     const api = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+
     const headers = {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
       Accept: "application/vnd.github+json",
-      "Content-Type": "application/json"
+      "X-GitHub-Api-Version": "2022-11-28"
     };
 
-    // ---- Чтение текущего photos.json ----
+    // 1) Пытаемся получить текущий photos.json
     const getRes = await fetch(api, { headers });
 
-    let data = {};
-    let sha = null;
+    let contentJson = {};
+    let sha = undefined;
 
     if (getRes.status === 200) {
-      const info = await getRes.json();
-      sha = info.sha;
+      const current = await getRes.json();
+      sha = current.sha;
 
-      const decoded = Buffer.from(info.content, "base64").toString("utf8");
-      data = JSON.parse(decoded || "{}");
+      if (current.content) {
+        const decoded = Buffer
+          .from(current.content, "base64")
+          .toString("utf8");
+
+        try {
+          contentJson = JSON.parse(decoded || "{}");
+        } catch {
+          contentJson = {};
+        }
+      }
+    } else if (getRes.status === 404) {
+      // файла ещё нет — создадим с нуля
+      contentJson = {};
+    } else {
+      const text = await getRes.text();
+      return {
+        statusCode: getRes.status,
+        body: `GitHub GET error: ${text}`
+      };
     }
 
-    // ---- Добавляем фото ----
-    if (!data[houseId]) data[houseId] = [];
-    data[houseId].push(url);
+    // 2) Добавляем фото для нужного дома
+    // КЛЮЧ — houseId (addr.id из data.js): "1", "5", "94a", "102" и т.п.
+    if (!contentJson[houseId]) contentJson[houseId] = [];
+    contentJson[houseId].push(url);
 
-    const newContent = Buffer
-      .from(JSON.stringify(data, null, 2))
+    // 3) Кодируем обратно в base64
+    const newContentBase64 = Buffer
+      .from(JSON.stringify(contentJson, null, 2))
       .toString("base64");
 
-    // ---- Сохраняем на GitHub ----
+    // 4) Отправляем PUT в GitHub
     const putRes = await fetch(api, {
       method: "PUT",
       headers,
       body: JSON.stringify({
         message: `Add photo for house ${houseId}`,
-        content: newContent,
+        content: newContentBase64,
+        // sha только если файл был
         ...(sha ? { sha } : {})
       })
     });
 
     if (!putRes.ok) {
-      return { statusCode: 500, body: await putRes.text() };
+      const text = await putRes.text();
+      return {
+        statusCode: putRes.status,
+        body: `GitHub PUT error: ${text}`
+      };
     }
 
-    return { statusCode: 200, body: JSON.stringify({ ok: true }) };
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ ok: true })
+    };
 
   } catch (e) {
-    return { statusCode: 500, body: e.message };
+    return {
+      statusCode: 500,
+      body: `Server error: ${e.message}`
+    };
   }
 };

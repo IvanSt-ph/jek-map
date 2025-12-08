@@ -6,26 +6,61 @@ const FILE_PATH = "photos.json";
 exports.handler = async () => {
   try {
     const token = process.env.GITHUB_TOKEN;
-    if (!token) return { statusCode: 500, body: "Missing GITHUB_TOKEN" };
+    if (!token) {
+      return {
+        statusCode: 500,
+        body: "Missing GITHUB_TOKEN env var"
+      };
+    }
 
     const api = `https://api.github.com/repos/${REPO}/contents/${FILE_PATH}`;
+
     const headers = {
       Authorization: `Bearer ${token}`,
-      Accept: "application/vnd.github+json"
+      Accept: "application/vnd.github+json",
+      "X-GitHub-Api-Version": "2022-11-28"
     };
 
     const res = await fetch(api, { headers });
 
     if (res.status === 404) {
-      return { statusCode: 200, body: "{}" };
+      // файла нет — возвращаем пустой объект
+      return {
+        statusCode: 200,
+        body: JSON.stringify({})
+      };
     }
 
-    const info = await res.json();
-    const raw = Buffer.from(info.content, "base64").toString("utf8");
+    if (!res.ok) {
+      const text = await res.text();
+      return {
+        statusCode: res.status,
+        body: `GitHub GET error: ${text}`
+      };
+    }
 
-    return { statusCode: 200, body: raw };
+    const data = await res.json();
+
+    const content = data.content
+      ? Buffer.from(data.content, "base64").toString("utf8")
+      : "{}";
+
+    let json;
+    try {
+      json = JSON.parse(content || "{}");
+    } catch {
+      json = {};
+    }
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify(json)
+    };
 
   } catch (e) {
-    return { statusCode: 500, body: e.message };
+    return {
+      statusCode: 500,
+      body: `Server error: ${e.message}`
+    };
   }
 };
